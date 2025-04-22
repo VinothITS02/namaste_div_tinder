@@ -24,7 +24,7 @@ connectDB().then(() => {
     });
 })
     .catch((err) => {
-        console.log("errr")
+        console.log("DB not connected. Please try again")
     })
 
 

@@ -1,6 +1,15 @@
 const mongoose = require("mongoose");
+const proces = require("process");
+const donEnv = require('dotenv').config();
+
+const dbURL = proces.env.databaseURL;
 
 const connectDB = async () => {
-   await mongoose.connect("mongodb+srv://divTinder:uqljN90eJ6X1L4Xd@divtinder.re7hxnq.mongodb.net/divTinder")
+   try {
+      await mongoose.connect(`${dbURL}`);
+   }
+   catch (err) {
+      console.log("err", err)
+   }
 };
 module.exports = connectDB
