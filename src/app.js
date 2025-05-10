@@ -2,9 +2,14 @@ const express = require('express');
 const connectDB = require("./config/database");
 const bcrypt = require("bcrypt");
 const User = require("./models/user");
+const cookie = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+const { UserAuth } = require("./middlewares/auth")
 
 const app = express();
 app.use(express.json());
+app.use(cookie());
+const expiresIn = '1h';
 
 
 app.post("/signup", async (req, res) => {
@@ -26,54 +31,36 @@ app.post("/login", async (req, res) => {
         let { emailId, password } = req.body;
         let findUser = await User.findOne({ emailId });
         if (!findUser) res.status(400).send("Invalid User")
-        let passowrdCheck = await bcrypt.compare(password, findUser.password);
+        let passowrdCheck = await findUser.validatePassword(password);
         if (!passowrdCheck) res.status(400).send("Invalid User");
+        let jwtToken = await jwt.sign({ _id: findUser._id }, "DEV@Tinder@123", { expiresIn });
+        res.cookie("token", jwtToken);
         res.send("Logedin Successfuly!");
     }
     catch (err) {
+        console.log(err)
         res.status(400).send("Invalid User")
     }
 });
 
-app.get("/user", async (req, res) => {
+app.get("/profile", UserAuth, async (req, res) => {
     try {
-        let users = await User.find({});
-        res.send(users);
+        res.send(req.user)
     }
     catch (err) {
-        res.status(400).send("Something went wrong!")
+        res.status(400).send("Error " + err.message)
     }
 });
 
-app.patch("/user/:userId", async (req, res) => {
+app.post("/sendConnectionRequest", UserAuth, async (req, res) => {
     try {
-        let userId = req.params.userId;
-        let AllowedUpdate = ["firstName", "lastName", "photoURL", "skills", "gender"];
-        let isAllowedUpdate = Object.keys(req.body).every(item => {
-            return AllowedUpdate.includes(item)
-        });
-        if (!isAllowedUpdate) {
-            throw new Error("Update Failed")
-        }
-        let body = req.body;
-        await User.findByIdAndUpdate({ _id: userId }, body);
-        res.send("Updated Succesfully");
+        res.send("Connection sent")
     }
     catch (err) {
-        res.status(400).send("Update Failed", err.message)
+        res.status(400).send("ERROR " + err.message)
     }
-});
+})
 
-app.delete("/user", async (req, res) => {
-    try {
-        let userId = req.body.userId;
-        await User.findByIdAndDelete({ _id: userId });
-        res.send("User Deleted Successfully!");
-    }
-    catch (err) {
-        res.status(400).send("Something went wrong!")
-    }
-});
 
 
 connectDB().then(() => {
