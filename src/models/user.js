@@ -46,6 +46,18 @@ const userSchema = new mongoose.Schema({
     },
     skills: {
         type: [String]
+    },
+    jobTitle: {
+        type: String
+    },
+    companyName: {
+        type: String
+    },
+    about: {
+        type: String
+    },
+    dateOfBirth: {
+        type: Date
     }
 }, {
     timestamps: true
