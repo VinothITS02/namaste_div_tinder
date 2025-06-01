@@ -17,7 +17,8 @@
 -Post / reqeust/review/rejeced/:userId
 
 ### UserRouter
--Get / connections
--Get / request/received
+-Get /user/myConnections - Basically who has accepted my connection request
+-Get /user/request/received
+-Get /user/feed -Get you the users for other users on platforms
 
 Status: Interested, ignored, accepted, rejected

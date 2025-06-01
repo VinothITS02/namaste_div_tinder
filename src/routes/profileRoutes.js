@@ -4,8 +4,6 @@ const bcrypt = require("bcrypt");
 const profileRouter = express.Router();
 const { UserAuth } = require("../middlewares/auth");
 const { validateEditProfileData } = require("../utils/validation");
-const User = require("../models/user");
-
 
 profileRouter.get("/view", UserAuth, async (req, res) => {
     try {

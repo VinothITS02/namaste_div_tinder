@@ -9,7 +9,8 @@ const connectDB = async () => {
       await mongoose.connect(`${dbURL}`);
    }
    catch (err) {
-      console.log("err", err)
+      //console.log("err", err);
+      throw new Error("Server is not Connting pls check")
    }
 };
 module.exports = connectDB
