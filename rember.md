@@ -3,3 +3,5 @@ read more about it
 2) what are dependencies
 3) what is use of -g while npm install
 4) what is difference between caret and tilde
+
+// running command npm run start

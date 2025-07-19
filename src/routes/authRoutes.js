@@ -25,10 +25,15 @@ authRouter.post("/login", async (req, res) => {
         let findUser = await User.findOne({ emailId });
         if (!findUser) res.status(400).send("Invalid Credentials")
         let passowrdCheck = await findUser.validatePassword(password);
-        if (!passowrdCheck) res.status(400).send("Invalid Credentials");
+        if (!passowrdCheck) {
+            res.status(400).json({
+                message:"Invalid Credentials!!!"
+            })
+            return;
+        }
         let jwtToken = await jwt.sign({ _id: findUser._id }, "DEV@Tinder@123", { expiresIn });
         res.cookie("token", jwtToken);
-        res.send("Logedin Successfuly!");
+        res.send(findUser);
     }
     catch (err) {
         console.log(err)

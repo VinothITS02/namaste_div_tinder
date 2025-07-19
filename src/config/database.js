@@ -6,10 +6,14 @@ const dbURL = proces.env.databaseURL;
 
 const connectDB = async () => {
    try {
-      await mongoose.connect(`${dbURL}`);
+      console.log("dbURL", dbURL)
+      await mongoose.connect(`${dbURL}`, {
+         useNewUrlParser: true,
+         useUnifiedTopology: true
+      });
    }
    catch (err) {
-      //console.log("err", err);
+      console.log("err", err);
       throw new Error("Server is not Connting pls check")
    }
 };
