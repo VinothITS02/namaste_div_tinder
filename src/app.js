@@ -17,6 +17,10 @@ app.use(express.json());
 app.use(cookie());
 
 
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
+
 app.use("/", authRouter);
 app.use("/profile", profileRouter);
 app.use("/connectionRequest", connectionRequestRouter);
