@@ -20,6 +20,7 @@ authRouter.post("/signup", async (req, res) => {
 });
 
 authRouter.post("/login", async (req, res) => {
+    console.log("Starting the login function=========>")
     try {
         let { emailId, password } = req.body;
         let findUser = await User.findOne({ emailId });
@@ -34,6 +35,7 @@ authRouter.post("/login", async (req, res) => {
         let jwtToken = await jwt.sign({ _id: findUser._id }, "DEV@Tinder@123", { expiresIn });
         res.cookie("token", jwtToken);
         res.send(findUser);
+        console.log("Ending the login function with successfully connected=========>")
     }
     catch (err) {
         console.log(err)
