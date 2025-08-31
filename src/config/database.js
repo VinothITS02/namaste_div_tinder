@@ -1,13 +1,9 @@
 const mongoose = require("mongoose");
-const proces = require("process");
-const donEnv = require('dotenv').config();
-
-const dbURL = proces.env.databaseURL;
+const { dataBaseURL } = require("./configEnv");
 
 const connectDB = async () => {
    try {
-      console.log("dbURL", dbURL)
-      await mongoose.connect(`${dbURL}`, {
+      await mongoose.connect(`${dataBaseURL}`, {
          useNewUrlParser: true,
          useUnifiedTopology: true
       });
